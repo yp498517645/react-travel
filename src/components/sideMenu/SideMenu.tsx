@@ -1,6 +1,3 @@
-/**
- * 产品类型选择框
- */
 
 import React from "react";
 import { Menu } from "antd";

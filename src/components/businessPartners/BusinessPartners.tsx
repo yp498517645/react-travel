@@ -1,7 +1,3 @@
-/**
- * 合作企业
- */
-
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Row, Col, Typography, Divider } from "antd";
