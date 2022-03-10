@@ -5,58 +5,66 @@
 import React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { Layout, Typography, Input, Menu, Button, Dropdown } from "antd";
-import { GlobalOutlined } from "@ant-design/icons";
-import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { GlobalOutlined, LoginOutlined } from "@ant-design/icons";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
-import store from '../../store/store'
-import { LanguageState } from '../../store/languageReducer'
+import store from "../../store/store";
+import { LanguageState } from "../../store/languageReducer";
 
 import logo from "../../assets/logo.svg";
 import styles from "./Header.module.css";
 
 interface State extends LanguageState {}
 
-class HeaderComponent extends React.Component<RouteComponentProps & WithTranslation, State> {
-
+class HeaderComponent extends React.Component<
+  RouteComponentProps & WithTranslation,
+  State
+> {
   constructor(props) {
-    super(props)
-    const storeState = store.getState()
+    
+    super(props);
+    const storeState = store.getState();
     this.state = {
       language: storeState.language,
       languageList: storeState.languageList,
-    }
+    };
   }
 
   componentDidMount() {
-    store.subscribe(this.handleStoreChange)
+    store.subscribe(this.handleStoreChange);
+
   }
 
   handleStoreChange = () => {
-    const storeState = store.getState()
+    const storeState = store.getState();
     this.setState({
       language: storeState.language,
       languageList: storeState.languageList,
-    })
-  }
+    });
+  };
+  //退出登陆
+  loginOut = () => {
+    console.log("quitLogin");
+  };
 
   menuClickHandler = (event) => {
-    let action
-    if (event.key === 'new') {
+    let action;
+    if (event.key === "new") {
       action = {
-        type: 'add_language',
-        payload: { code: 'new_lang', name: '新语言' }
-      }
+        type: "add_language",
+        payload: { code: "new_lang", name: "新语言" },
+      };
     } else {
       action = {
-        type: 'change_language',
-        payload: event.key
-      }
+        type: "change_language",
+        payload: event.key,
+      };
     }
-    store.dispatch(action)
-  }
+    store.dispatch(action);
+  };
 
-  render () {
-    const { history, t } = this.props
+  render() {
+    const { history, t } = this.props;
     return (
       <div className={styles["app-header"]}>
         {/* top-header */}
@@ -70,17 +78,39 @@ class HeaderComponent extends React.Component<RouteComponentProps & WithTranslat
                   {this.state.languageList.map((l) => {
                     return <Menu.Item key={l.code}>{l.name}</Menu.Item>;
                   })}
-                  {/* <Menu.Item key={'new'}>{ t('header.add_new_language') }</Menu.Item> */}
                 </Menu>
               }
               icon={<GlobalOutlined />}
             >
               {this.state.language === "zh" ? "中文" : "English"}
             </Dropdown.Button>
-            <Button.Group className={styles["button-group"]}>
-              <Button href="http://localhost:8080/register">注册</Button>
-              <Button href="http://localhost:8080">登陆</Button>
-            </Button.Group>
+            {this.props.location.search ? (
+              <div className={styles["userContainer"]}>
+                <span className={styles["username"]}>username:</span>
+                <span className={styles["usr"]}>
+                  {this.props.location.search.substring(
+                    1,
+                    this.props.location.search.length
+                  )}
+                </span>
+                <div
+                  className={styles["loginOutlined"]}
+                  onClick={this.loginOut}
+                >
+                  <LoginOutlined />
+                  <a href="http://localhost:8080/login">注销</a>
+                </div>
+              </div>
+            ) : (
+              <Button.Group className={styles["button-group"]}>
+                <Button href="http://localhost:8080/register">
+                  {t("header.register")}
+                </Button>
+                <Button href="http://localhost:8080/login">
+                  {t("header.signin")}
+                </Button>
+              </Button.Group>
+            )}
           </div>
         </div>
         <Layout.Header className={styles["main-header"]}>
@@ -120,6 +150,6 @@ class HeaderComponent extends React.Component<RouteComponentProps & WithTranslat
       </div>
     );
   }
-};
+}
 
-export const Header = withTranslation()(withRouter(HeaderComponent))
+export const Header = withTranslation()(withRouter(HeaderComponent));
