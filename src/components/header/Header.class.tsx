@@ -21,7 +21,6 @@ class HeaderComponent extends React.Component<
   State
 > {
   constructor(props) {
-    
     super(props);
     const storeState = store.getState();
     this.state = {
@@ -32,7 +31,7 @@ class HeaderComponent extends React.Component<
 
   componentDidMount() {
     store.subscribe(this.handleStoreChange);
-
+    localStorage.setItem("username", this.props.location.search);
   }
 
   handleStoreChange = () => {
@@ -84,14 +83,13 @@ class HeaderComponent extends React.Component<
             >
               {this.state.language === "zh" ? "中文" : "English"}
             </Dropdown.Button>
-            {this.props.location.search ? (
+            {localStorage.getItem("username") ? (
               <div className={styles["userContainer"]}>
                 <span className={styles["username"]}>username:</span>
                 <span className={styles["usr"]}>
-                  {this.props.location.search.substring(
-                    1,
-                    this.props.location.search.length
-                  )}
+                  {localStorage
+                    .getItem("username")
+                    ?.substring(1, localStorage.getItem("username")?.length)}
                 </span>
                 <div
                   className={styles["loginOutlined"]}

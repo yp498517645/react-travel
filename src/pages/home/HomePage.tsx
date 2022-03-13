@@ -1,7 +1,6 @@
 /**
  * 主页
  */
-
 import React from 'react'
 import { withTranslation, WithTranslation } from 'react-i18next'
 import { Col, Row, Typography } from "antd";

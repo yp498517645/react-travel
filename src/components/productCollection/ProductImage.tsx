@@ -24,7 +24,7 @@ export const ProductImage: React.FC<PropsType> = ({
 }) => {
   const { t } = useTranslation()
   return (
-    <Link to={`detail/${id}`}>
+    <Link to={`detail`}>
       {size === "large" ? (
         <Image src={imageSrc} height={285} width={490} />
       ) : (
