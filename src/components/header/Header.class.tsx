@@ -28,10 +28,12 @@ class HeaderComponent extends React.Component<
       languageList: storeState.languageList,
     };
   }
-
+componentWillMount(){
+localStorage.setItem("username", this.props.location.search);
+}
   componentDidMount() {
     store.subscribe(this.handleStoreChange);
-    localStorage.setItem("username", this.props.location.search);
+    
   }
 
   handleStoreChange = () => {
